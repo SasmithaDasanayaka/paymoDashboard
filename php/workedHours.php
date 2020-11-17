@@ -15,19 +15,22 @@ if ($result === false) {
 }
 curl_close($ch);
 
-$projectsArr = array();
-$totalTime = 0;
+$workedHoursPerClientArray = array();
+$totalWorkedSeconds = 0;
 
 foreach (json_decode($result, true)['clients'] as $client) {
     $clientId =  $client['id'];
 
-    $currentDate = gmdate('y-m-d');
-    $previousDate = date_create(gmdate('y-m-d'));
-    date_sub($previousDate, date_interval_create_from_date_string("30 days"));
-    $newPreviousDate = date_format($previousDate, "Y-m-d");
+    // $currentDate = gmdate('y-m-d');
+    // $previousDate = date_create(gmdate('y-m-d'));
+    // date_sub($previousDate, date_interval_create_from_date_string("30 days"));
+    // $newPreviousDate = date_format($previousDate, "Y-m-d");
 
-    $timeUrl = "https://app.paymoapp.com/api/entries?where=client_id=$clientId and time_interval in ('$newPreviousDate','$currentDate')";
-    
+    $currentDate = gmdate('y-m-');
+    $startDate = $currentDate . "01";
+    $endDate = $currentDate . "30";
+    $timeUrl = "https://app.paymoapp.com/api/entries?where=client_id=$clientId and time_interval in ('$startDate','$endDate')";
+
     $ch = curl_init();
     curl_setopt($ch, CURLOPT_URL, $timeUrl);
     curl_setopt($ch, CURLOPT_HTTPHEADER, array("Accept: application/json"));
@@ -41,10 +44,18 @@ foreach (json_decode($result, true)['clients'] as $client) {
     }
     curl_close($ch);
 
+    $workedSecondsPerClient = 0;
     foreach (json_decode($result, true)['entries'] as $entry) {
-        $totalTime += $entry['duration'];
+        $workedSecondsPerClient += $entry['duration'];
     }
-}
-$totalHoursWorked = $totalTime / 3600;
 
-echo $totalHoursWorked ;
+    $workedHoursPerClientArray[$clientId] = $workedSecondsPerClient / 3600;
+    $totalWorkedSeconds += $workedSecondsPerClient;
+}
+$totalWorkedHours = $totalWorkedSeconds / 3600;
+
+$targetSales = $totalWorkedHours * 90;
+
+$resultArray = array('totalWorkedHours' => $totalWorkedHours, 'targetSales' => $targetSales, 'workedHoursPerClientArray' => $workedHoursPerClientArray);
+
+echo json_encode($resultArray);
