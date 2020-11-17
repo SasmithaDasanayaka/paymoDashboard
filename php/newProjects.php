@@ -50,8 +50,7 @@ foreach (json_decode($result, true)['projectstatuses'] as $project) {
     }
 }
 
-echo $countNewProjectsCurrent;
-echo $countNewProjectsPrevious;
-$percentageGrowth = ($countNewProjectsCurrent - $countNewProjectsPrevious) * 100 / $countNewProjectsPrevious;
+$countNewProjectsPrevious != 0 ? $percentageGrowth = ($countNewProjectsCurrent - $countNewProjectsPrevious) * 100 / $countNewProjectsPrevious : $percentageGrowth = 100;
 
 $resultArray = array("countNewProjectsCurrent" => $countNewProjectsCurrent, "percentageGrowth" => $percentageGrowth);
+echo json_encode($resultArray);
