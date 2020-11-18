@@ -1,5 +1,6 @@
 <?php
 $projectsUrl = "https://app.paymoapp.com/api/clients";
+$employeeUrl = "https://app.paymoapp.com/api/users?where=type=Employee";
 $email = "sasmithadasanayaka96@gmail.com";
 $password = "HjA!!7P2Mtxhu5b";
 
@@ -40,7 +41,6 @@ foreach (json_decode($result, true)['clients'] as $client) {
     $result = curl_exec($ch);
     if ($result === false) {
         echo "Curl error: " . curl_error($ch) . "\n";
-        exit();
     }
     curl_close($ch);
 
@@ -52,10 +52,27 @@ foreach (json_decode($result, true)['clients'] as $client) {
     $workedHoursPerClientArray[$clientId] = $workedSecondsPerClient / 3600;
     $totalWorkedSeconds += $workedSecondsPerClient;
 }
+
 $totalWorkedHours = $totalWorkedSeconds / 3600;
 
 $targetSales = $totalWorkedHours * 90;
 
-$resultArray = array('totalWorkedHours' => $totalWorkedHours, 'targetSales' => $targetSales, 'workedHoursPerClientArray' => $workedHoursPerClientArray);
+$ch = curl_init();
+curl_setopt($ch, CURLOPT_URL, $employeeUrl);
+curl_setopt($ch, CURLOPT_HTTPHEADER, array("Accept: application/json"));
+curl_setopt($ch, CURLOPT_USERPWD, $email . ":" . $password);
+curl_setopt($ch, CURLOPT_RETURNTRANSFER, 1);
+
+$employee = curl_exec($ch);
+
+$employee = json_decode($employee, true);
+$numOfEmployee = count($employee['users']);
+
+$productivityRate = ($numOfEmployee  != 0) ? $totalWorkedHours / 160 / $numOfEmployee : 0;
+
+print_r($productivityRate);
+
+
+$resultArray = array('totalWorkedHours' => $totalWorkedHours, 'targetSales' => $targetSales, 'workedHoursPerClientArray' => $workedHoursPerClientArray, 'productivityRate' => $productivityRate);
 
 echo json_encode($resultArray);
