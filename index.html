@@ -472,9 +472,9 @@
           <div class="content-i">
             <div class="content-box">
               <div class="element-wrapper compact pt-4">
-                <h6 class="element-header">
-                  Dashboard
-                </h6>
+                <h3 class="element-header">
+                  MONTHLY <span style="font-weight: bold;">OVERVIEW</span>
+                </h3>
                 <div class="element-box-tp">
                   <div class="row">
                     <div class="col-sm-4 col-xxxl-4">
@@ -537,21 +537,21 @@
 
                 </div>
                   <div class="row">
-                    <div class="d-none d-xxxl-block col-xxxl-3">
+                    <div class="col-sm-3 col-xxxl-3">
                       <div class="element-wrapper">
-                        <h6 class="element-header">
-                          Projects
-                        </h6>
+                        <h3 class="element-header">
+                          <span style="font-weight: bold;"> Projects </span>
+                        </h3>
                         <div class="element-box less-padding">
                           <div class="el-chart-w"><div class="chartjs-size-monitor"><div class="chartjs-size-monitor-expand"><div class=""></div></div><div class="chartjs-size-monitor-shrink"><div class=""></div></div></div>
                             <canvas height="244" id="donutChart1" width="244" class="chartjs-render-monitor" style="display: block; width: 244px; height: 244px;"></canvas>
-                            <div class="inside-donut-chart-label">
-                              <strong>35</strong><span>Projects</span>
+                            <div class="inside-donut-chart-label" id="noOfProjects">
+                              <!-- <strong>35</strong><span>Projects</span> -->
                             </div>
                           </div>
                           <div class="el-legend condensed">
-                            <div class="row">
-                              <div class="col-auto col-xxxxl-6 ml-sm-auto mr-sm-auto">
+                            <div class="row" id="projectsData">
+                              <!-- <div class="col-auto col-xxxxl-6 ml-sm-auto mr-sm-auto">
                                 <div class="legend-value-w">
                                   <div class="legend-pin legend-pin-squared" style="background-color: #6896f9;"></div>
                                   <div class="legend-value">
@@ -571,7 +571,7 @@
                                   </div>
                                 </div>
                               </div>
-                              <div class="col-sm-6 d-none d-xxxxl-block">
+                              <div class="col-sm-6  d-xxxxl-block">
                                 <div class="legend-value-w">
                                   <div class="legend-pin legend-pin-squared" style="background-color: #806ef9;"></div>
                                   <div class="legend-value">
@@ -590,13 +590,13 @@
                                     </div>
                                   </div>
                                 </div>
-                              </div>
+                              </div> -->
                             </div>
                           </div>
                         </div>
                       </div>
                     </div>
-                    <div class="col-sm-12 col-xxxl-9">
+                    <div class="col-sm-9 col-xxxl-9">
                       <div class="element-wrapper">
                         <h6 class="element-header">
                           Forecast
@@ -718,7 +718,7 @@
                             </div>
                           </div>
                           <div class="mt-4 border-top pt-3">
-                            <div class="element-actions d-none d-sm-block">
+                            <div class="element-actions  d-sm-block">
                               <form class="form-inline justify-content-sm-end">
                                 <select class="form-control form-control-sm form-control-faded">
                                   <option selected="true">
@@ -765,10 +765,10 @@
                             </select>
                           </form>
                         </div>
-                        <h6 class="element-header">
+                        <h3 class="element-header">
                           <!-- Best Sellers -->
-                          Employees
-                        </h6>
+                          <span style="font-weight: bold;"> Employees </span>
+                        </h3>
                         <div class="element-box">
                           <div class="table-responsive">
                             <table class="table table-lightborder">
@@ -864,37 +864,38 @@
                     <div class="col-sm-12">
                       <!--START - Recent Ticket Comments-->
                       <div class="element-wrapper">
-                        <h6 class="element-header">
-                          Recent Ticket Comments
-                        </h6>
-                        <div class="element-box-tp">
-                          <div class="table-responsive">
+                        <h3 class="element-header">
+                          <!-- Recent Ticket Comments -->
+                          By <span style="font-weight: bold;">Client</span>
+                        </h3>
+                        <div class="element-box-tp" >
+                          <div class="table-responsive" style="width: 60%;">
                             <table class="table table-padded">
                               <thead>
                               <tr>
                                 <th></th>
                                 <th>
-                                  Assigned Agent
+                                  Client
                                 </th>
                                 <th>
-                                  Last Comment
+                                  Project amount
                                 </th>
                                 <th class="text-center">
-                                  Ticket Category
+                                  Profit share
                                 </th>
                                 <th>
-                                  Last Reply Date
+                                  Time share
                                 </th>
                                 <th>
-                                  Ticket Status
+                                <span style="font-weight: bold;"> ×90€</span> 
                                 </th>
-                                <th>
+                                <!-- <th>
                                   Actions
-                                </th>
+                                </th> -->
                               </tr>
                               </thead>
-                              <tbody>
-                              <tr>
+                              <tbody id="clientTable">
+                              <!-- <tr>
                                 <td class="text-center">
                                   <input class="form-control" type="checkbox">
                                 </td>
@@ -1055,7 +1056,7 @@
                                 <td class="row-actions">
                                   <a href="#"><i class="os-icon os-icon-grid-10"></i></a><a href="#"><i class="os-icon os-icon-ui-44"></i></a><a class="danger" href="#"><i class="os-icon os-icon-ui-15"></i></a>
                                 </td>
-                              </tr>
+                              </tr> -->
                               </tbody>
                             </table>
                           </div>

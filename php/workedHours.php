@@ -1,6 +1,6 @@
 <?php
 
-$clientUrl = "https://app.paymoapp.com/api/clients?include=projects.id";
+$clientUrl = "https://app.paymoapp.com/api/clients?include=projects.id,projects.budget_hours";
 $employeeUrl = "https://app.paymoapp.com/api/users?where=type=Employee";
 $projectUrl = "https://app.paymoapp.com/api/projects";
 
@@ -19,24 +19,34 @@ if ($result === false) {
 }
 curl_close($ch);
 
-$workedHoursPerClientArray = array();
+$clientArray = array();
 $totalWorkedSeconds = 0;
 
-$_31daysMonths = array(1, 3, 5, 7, 8, 10, 12);
-$_30daysMonths = array(2, 4, 6, 9, 11);
-
+$_30daysMonths = array('February', 'April', 'June', 'September', 'November');
 
 foreach (json_decode($result, true)['clients'] as $client) {
     $clientId =  $client['id'];
     $numOfProjects = count($client['projects']);
-    // $currentDate = gmdate('y-m-d');
-    // $previousDate = date_create(gmdate('y-m-d'));
-    // date_sub($previousDate, date_interval_create_from_date_string("30 days"));
-    // $newPreviousDate = date_format($previousDate, "Y-m-d");
+
+    $budgetHours = 0;
+    foreach ($client['projects'] as $project) {
+        $budgetHours += $project['budget_hours'];
+    }
+
 
     $currentDate = gmdate('y-m-');
-    $startDate = $currentDate . "01";
-    $endDate = $currentDate . "30";
+    $startDate = $currentDate . "01T00:00:00Z";
+
+    if (in_array(date('F'), $_30daysMonths)) {
+        if (date('F') === 'February') {
+            $endDate = $currentDate . "29T00:00:00Z";
+        } else {
+            $endDate = $currentDate . "30T00:00:00Z";
+        }
+    } else {
+        $endDate = $currentDate . "31T00:00:00Z";
+    }
+
     $timeUrl = "https://app.paymoapp.com/api/entries?where=client_id=$clientId and time_interval in ('$startDate','$endDate')";
 
     $ch = curl_init();
@@ -56,7 +66,7 @@ foreach (json_decode($result, true)['clients'] as $client) {
         $workedSecondsPerClient += $entry['duration'];
     }
 
-    $workedHoursPerClientArray[$clientId] = $workedSecondsPerClient / 3600;
+    $clientArray[$clientId] = array('name' => $client['name'], 'workedHours' => round($workedSecondsPerClient / 3600, 2), 'numOfProjects' => $numOfProjects, 'budgetHours' => $budgetHours);
     $totalWorkedSeconds += $workedSecondsPerClient;
 }
 
@@ -128,8 +138,13 @@ if ($budgetHours - $workedHours >= 0) {
     $profitSurplus = 0;
 }
 
+foreach ($clientArray as $key => $client) {
+    $budgetHours !== 0 && $clientArray[$key]['budgetHours'] = $client['budgetHours'] / $budgetHours;
+    $totalWorkedHours !== 0 && $clientArray[$key]['timeShare'] = $client['workedHours'] / $totalWorkedHours;
+}
+
 $salesTotal = ($budgetHours !== 0) ? $budgetHours * 90 : 'unlimited';
 
-$resultArray = array('totalWorkedHours' => $totalWorkedHours, 'targetSales' => $targetSales, 'workedHoursPerClientArray' => $workedHoursPerClientArray, 'productivityRate' => $productivityRate, 'profit' => $profitSurplus, 'loss' => $loss, 'salesTotal' => $salesTotal);
+$resultArray = array('totalWorkedHours' => $totalWorkedHours, 'targetSales' => $targetSales, 'client' => $clientArray, 'productivityRate' => $productivityRate, 'profit' => $profitSurplus, 'loss' => $loss, 'salesTotal' => $salesTotal);
 
 echo json_encode($resultArray);

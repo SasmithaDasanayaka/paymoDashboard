@@ -22,7 +22,9 @@ curl_close($ch);
 $_30daysMonths = array('February', 'April', 'June', 'September', 'November');
 $workedHoursPerUserArray = array();
 foreach (json_decode($result, true)['users'] as $users) {
+
     $userId = $users['id'];
+    $workedDayHours = $users['workday_hours'];
 
     $currentDate = gmdate('y-m-');
     $startDate = $currentDate . "01";
@@ -59,7 +61,9 @@ foreach (json_decode($result, true)['users'] as $users) {
         $workedSecondsPerUser += $entry['duration'];
     }
 
-    $workedHoursPerUserArray[$userId] = array('name' => $users['name'], 'workedHours' => round($workedSecondsPerUser / 3600, 2));
+    $workedHours = round($workedSecondsPerUser / 3600, 2);
+    $productivityRate = round($workedHours / ($workedDayHours * 20), 3);
+    $workedHoursPerUserArray[$userId] = array('name' => $users['name'], 'workedHours' => $workedHours, 'productivityRate' => $productivityRate);
 }
 
 $resultArray = array('users' => $workedHoursPerUserArray);
