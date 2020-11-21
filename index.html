@@ -482,8 +482,7 @@
                         <div class="label">
                           Worked Hours Total
                         </div>
-                        <div class="value">
-                          57
+                        <div class="value" id="totalWorkedHours">
                         </div>
                       </a>
                     </div>
@@ -492,8 +491,7 @@
                         <div class="label">
                           Target Sales
                         </div>
-                        <div class="value">
-                          $457
+                        <div class="value" id="targetSales">
                         </div>
                       </a>
                     </div>
@@ -502,8 +500,7 @@
                         <div class="label">
                           Sales Total
                         </div>
-                        <div class="value">
-                          125
+                        <div class="value" id="salesTotal">
                         </div>
                       </a>
                     </div>
@@ -515,8 +512,7 @@
                       <div class="label">
                         Profit Surplus
                       </div>
-                      <div class="value">
-                        57
+                      <div class="value"  id="profit">              
                       </div>
                     </a>
                   </div>
@@ -525,8 +521,7 @@
                       <div class="label">
                         Loss
                       </div>
-                      <div class="value">
-                        $457
+                      <div class="value" id="loss">
                       </div>
                     </a>
                   </div>
@@ -535,8 +530,7 @@
                       <div class="label">
                         Productivity Rate
                       </div>
-                      <div class="value">
-                        125
+                      <div class="value" id="productivityRate">
                       </div>
                     </a>
                   </div>
@@ -772,7 +766,8 @@
                           </form>
                         </div>
                         <h6 class="element-header">
-                          Best Sellers
+                          <!-- Best Sellers -->
+                          Employees
                         </h6>
                         <div class="element-box">
                           <div class="table-responsive">
@@ -780,24 +775,27 @@
                               <thead>
                               <tr>
                                 <th>
-                                  Customer Name
+                                  <!-- Customer Name -->
+                                  Employee Name
                                 </th>
                                 <th>
-                                  Tickets
+                                  <!-- Tickets -->
+                                  Worked hours
                                 </th>
                                 <th>
-                                  Location
+                                  <!-- Location -->
+                                  Productivity rate
                                 </th>
-                                <th class="text-center">
+                                <!-- <th class="text-center">
                                   Status
                                 </th>
                                 <th class="text-right">
                                   Last Reply
-                                </th>
+                                </th> -->
                               </tr>
                               </thead>
-                              <tbody>
-                              <tr>
+                              <tbody  id="employeeTable">
+                              <!-- <tr>
                                 <td>
                                   <div class="user-with-avatar">
                                     <img alt="" src="img/avatar1.jpg"><span class="d-none d-xl-inline-block">John Mayers</span>
@@ -853,7 +851,7 @@
                                 <td class="text-right">
                                   <span>Jan 15th </span><span class="smaller lighter">3:14pm</span>
                                 </td>
-                              </tr>
+                              </tr> -->
                               </tbody>
                             </table>
                           </div>
@@ -1114,5 +1112,7 @@
       ga('create', 'UA-XXXXXXXX-9', 'auto');
       ga('send', 'pageview');
     </script>
+
+    <script src="js/getDashboard.js"></script>
   </body>
 </html>
