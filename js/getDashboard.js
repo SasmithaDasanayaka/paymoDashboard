@@ -70,7 +70,7 @@ $.ajax({
       </tr>`;
     });
     clientTable.innerHTML = clientTableData;
-    jobHours.innerHTML = `<span style="font-weight: bold;"> ${response.jobHours} </span>`;
+    jobHours.innerHTML = `<span style="font-weight: bold;"> ${response.jobHours}h </span>`;
     occupiedEmployees.innerHTML = `<span style="font-weight: bold;"> ${response.fullyOccupiedEmployees} </span>`;
 
     dashBoardLoader.style.visibility = "hidden";
