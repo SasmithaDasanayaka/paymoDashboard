@@ -12,28 +12,43 @@ const dashBoardLoader = document.getElementById("dashBoardLoader");
 const employeeLoader = document.getElementById("employeeLoader");
 const clientLoader = document.getElementById("clientLoader");
 const projectsLoader = document.getElementById("projectsLoader");
+const projectForecast = document.getElementById("projectForecast");
+const forecastLoader = document.getElementById("forecastLoader");
+const jobHours = document.getElementById("jobHours");
+const occupiedEmployees = document.getElementById("occupiedEmployees");
+
 
 $.ajax({
   url: "php/workedHours.php",
   type: "GET",
   success: function (result) {
     const response = JSON.parse(result);
-    totalWorkedHours.innerHTML = response.totalWorkedHours;
-    targetSales.innerHTML = `${response.targetSales}€`;
-    productivityRate.innerHTML = response.productivityRate;
-    profit.innerHTML = `${response.profit}€`;
+    totalWorkedHours.innerHTML = `<span style="font-weight: bold;"> ${response.totalWorkedHours}H </span>`;
+    targetSales.innerHTML = `<span style="font-weight: bold;">${response.targetSales}€ </span>`;
+    productivityRate.innerHTML = `<span style="font-weight: bold;">${response.productivityRate} </span>`;
+    profit.innerHTML = `<span style="font-weight: bold;">${response.profit}€ </span>`;
     response.loss === 0
-      ? (loss.innerHTML = `${response.loss}€`)
-      : (loss.innerHTML = `-${response.loss}€`);
+      ? (loss.innerHTML = `<span style="font-weight: bold;">${response.loss}€</span>`)
+      : (loss.innerHTML = `<span style="font-weight: bold;"> -${response.loss}€</span>`);
     response.salesTotal !== "unlimited"
-      ? (salesTotal.innerHTML = `${response.salesTotal}€`)
-      : (salesTotal.innerHTML = `${response.salesTotal}`);
+      ? (salesTotal.innerHTML = `<span style="font-weight: bold;">${response.salesTotal}€</span>`)
+      : (salesTotal.innerHTML = `<span style="font-weight: bold;">${response.salesTotal}</span>`);
 
     var clientTableData = "";
     Object.values(response.client).forEach((element) => {
       const profitShare = element.budgetHours * 100;
       const timeShare = element.timeShare * 100;
       const amount = element.workedHours * 90;
+
+      console.log("response.forecast", response.forecast);
+      if (response.forecast > 0) {
+        projectForecast.innerHTML = `<span style="font-weight: bold;"> +${response.forecast}  </span>`;
+      } else if (response.forecast < 0) {
+        projectForecast.innerHTML = `<span style="font-weight: bold;"> -${response.forecast}  </span>`;
+      } else {
+        projectForecast.innerHTML = `<span style="font-weight: bold;"> ${response.forecast} </span>`;
+      }
+
       clientTableData += `
       <tr>
         <td></td>
@@ -55,8 +70,12 @@ $.ajax({
       </tr>`;
     });
     clientTable.innerHTML = clientTableData;
+    jobHours.innerHTML = `<span style="font-weight: bold;"> ${response.jobHours} </span>`;
+    occupiedEmployees.innerHTML = `<span style="font-weight: bold;"> ${response.fullyOccupiedEmployees} </span>`;
+
     dashBoardLoader.style.visibility = "hidden";
     clientLoader.style.visibility = "hidden";
+    forecastLoader.style.visibility = "hidden";
   },
 });
 

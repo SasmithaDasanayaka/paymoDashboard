@@ -72,7 +72,7 @@ foreach (json_decode($result, true)['clients'] as $client) {
 
 $totalWorkedHours = round($totalWorkedSeconds / 3600, 2);
 
-$targetSales = round($totalWorkedHours * 90,2);
+$targetSales = round($totalWorkedHours * 90, 2);
 
 
 $ch = curl_init();
@@ -106,12 +106,44 @@ $workedSeconds = 0;
 
 
 $timeUrl = "https://app.paymoapp.com/api/entries?where=project_id in (";
+
+$_1monthPreiviousProjectCount = 0;
+$_2monthPreviousProjectCount = 0;
+$_0monthPreviousProjectCount = 0;
+$currentMonthProjectCount = 0;
+
+$_1monthPreviousStartDate = date('Y-m-', strtotime('-2 month')) . "01T00:00:00Z";
+$_2monthPreviousStartDate = date('Y-m-', strtotime('-3 month')) . "01T00:00:00Z";
+$_0monthPreviousStartDate = date('Y-m-', strtotime('-1 month')) . "01T00:00:00Z";
+$_currentMonthStartDate = date('Y-m-', strtotime('0 month')) . "01T00:00:00Z";
+
+
 foreach (json_decode($project, true)['projects'] as $project) {
     ($project['budget_hours']) && $budgetHours += $project['budget_hours'];
     $id = $project['id'];
 
     $timeUrl = $timeUrl . "$id,";
+
+    if ($project['created_on'] >= $_currentMonthStartDate) {
+        $currentMonthProjectCount += 1;
+    } else if ($project['created_on'] >= $_0monthPreviousStartDate) {
+        $_0monthPreviousProjectCount += 1;
+    } else if ($project['created_on'] >= $_1monthPreviousStartDate) {
+        $_1monthPreiviousProjectCount += 1;
+    } else if ($project['created_on'] >= $_2monthPreviousStartDate) {
+        $_2monthPreviousProjectCount += 1;
+    }
 }
+
+$avg = ($_0monthPreviousProjectCount + $_1monthPreiviousProjectCount + $_2monthPreviousProjectCount) / 3;
+$weightedTot = (($_0monthPreviousProjectCount * 3) + ($_1monthPreiviousProjectCount * 2) + $_2monthPreviousProjectCount);
+$diff = $weightedTot - ($avg * 6);
+$ratio = 2;
+$val1 = $diff / $ratio;
+$val2 = $avg - $diff;
+$forecast = round(((4 * $val1) + $val2), 0);
+
+$totalLastThreeMonthsProjects = ($_0monthPreviousProjectCount + $_1monthPreiviousProjectCount + $_2monthPreviousProjectCount);
 
 $timeUrl = rtrim($timeUrl, ", ");
 $timeUrl = $timeUrl . ")";
@@ -124,10 +156,17 @@ curl_setopt($ch, CURLOPT_RETURNTRANSFER, 1);
 
 $time = curl_exec($ch);
 
+$lastThreeMonthsProjectSeconds = 0;
+
 foreach (json_decode($time, true)['entries'] as $entry) {
     $workedSeconds += $entry['duration'];
+    if ($entry['created_on'] >= $_2monthPreviousStartDate && $entry['updated_on'] <= $_currentMonthStartDate) {
+        $lastThreeMonthsProjectSeconds += $entry['duration'];
+    }
 }
 
+$lastThreeMonthsProjectSeconds !== 0 ? $jobHours = $currentMonthProjectCount * ($totalLastThreeMonthsProjects / $lastThreeMonthsProjectSeconds / 3600) : $jobHours = 0;
+$fullyOccupiedEmployees = $jobHours / 160;
 $workedHours = round($workedSeconds / 3600, 2);
 if ($budgetHours - $workedHours >= 0) {
     $remainHours = $budgetHours - $workedHours;
@@ -146,6 +185,6 @@ foreach ($clientArray as $key => $client) {
 
 $salesTotal = ($budgetHours !== 0) ? $budgetHours * 90 : 'unlimited';
 
-$resultArray = array('totalWorkedHours' => $totalWorkedHours, 'targetSales' => $targetSales, 'client' => $clientArray, 'productivityRate' => $productivityRate, 'profit' => $profitSurplus, 'loss' => $loss, 'salesTotal' => $salesTotal);
+$resultArray = array('totalWorkedHours' => $totalWorkedHours, 'targetSales' => $targetSales, 'client' => $clientArray, 'productivityRate' => $productivityRate, 'profit' => $profitSurplus, 'loss' => $loss, 'salesTotal' => $salesTotal, 'forecast' => $forecast, 'jobHours' => $jobHours, 'fullyOccupiedEmployees' => $fullyOccupiedEmployees);
 
 echo json_encode($resultArray);
