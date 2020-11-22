@@ -165,8 +165,8 @@ foreach (json_decode($time, true)['entries'] as $entry) {
     }
 }
 
-$lastThreeMonthsProjectSeconds !== 0 ? $jobHours = $currentMonthProjectCount * ($totalLastThreeMonthsProjects / $lastThreeMonthsProjectSeconds / 3600) : $jobHours = 0;
-$fullyOccupiedEmployees = $jobHours / 160;
+$lastThreeMonthsProjectSeconds !== 0 ? $jobHours = round(($currentMonthProjectCount * ($totalLastThreeMonthsProjects / $lastThreeMonthsProjectSeconds / 3600)), 2) : $jobHours = 0;
+$fullyOccupiedEmployees = round(($jobHours / 160), 2);
 $workedHours = round($workedSeconds / 3600, 2);
 if ($budgetHours - $workedHours >= 0) {
     $remainHours = $budgetHours - $workedHours;

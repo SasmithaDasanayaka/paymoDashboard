@@ -600,9 +600,9 @@ if (!isset($_SESSION["loggedin"]) || $_SESSION["loggedin"] !== true) {
                   </div>
                   <div class="col-sm-9 col-xxxl-9">
                     <div class="element-wrapper">
-                      <!-- <h6 class="element-header">
+                      <h3 class="element-header" style="visibility: hidden;">
                         Project <span style="font-weight: bold;"> Forecast </span>
-                      </h6> -->
+                      </h3>
                       <div class="element-box">
                         <div class="os-tabs-w">
                           <div class="os-tabs-controls">
