@@ -6,6 +6,9 @@
     $currentDate = gmdate('y-m-');
     $startDate = $currentDate . "01T00:00:00Z";
 
+    $_1monthBefore = date("y-m-d", strtotime("-1 Months"));
+    $_2monthBefore = date("y-m-d", strtotime("-2 Months"));
+
     $projectsUrl = "https://app.paymoapp.com/api/clients?include=projects.id,projects.created_on";
 
 

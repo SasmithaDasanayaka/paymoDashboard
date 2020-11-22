@@ -8,6 +8,9 @@ const employeeTable = document.getElementById("employeeTable");
 const clientTable = document.getElementById("clientTable");
 const noOfProjects = document.getElementById("noOfProjects");
 const individualprojectsData = document.getElementById("projectsData");
+const dashBoardLoader = document.getElementById("dashBoardLoader");
+const employeeLoader = document.getElementById("employeeLoader");
+const clientLoader = document.getElementById("clientLoader");
 
 $.ajax({
   url: "php/workedHours.php",
@@ -52,6 +55,8 @@ $.ajax({
       </tr>`;
     });
     clientTable.innerHTML = clientTableData;
+    dashBoardLoader.style.visibility = "hidden";
+    clientLoader.style.visibility = "hidden";
   },
 });
 
@@ -77,6 +82,7 @@ $.ajax({
       </tr>`;
     });
     employeeTable.innerHTML = employeeTableData;
+    employeeLoader.style.visibility = "hidden";
   },
 });
 
@@ -95,7 +101,9 @@ $.ajax({
         allProjectData += `
         <div class="col-auto col-xxxxl-6 ml-sm-auto mr-sm-auto">
           <div class="legend-value-w">
-            <div class="legend-pin legend-pin-squared" style="background-color: ${colors[count%4]};"></div>
+            <div class="legend-pin legend-pin-squared" style="background-color: ${
+              colors[count % 4]
+            };"></div>
               <div class="legend-value">
                 <span>${element.name}</span>
                 <div class="legend-sub-value">
@@ -107,7 +115,9 @@ $.ajax({
       } else {
         allProjectData += `
           <div class="legend-value-w">
-            <div class="legend-pin legend-pin-squared" style="background-color: ${colors[count%4]};"></div>
+            <div class="legend-pin legend-pin-squared" style="background-color: ${
+              colors[count % 4]
+            };"></div>
               <div class="legend-value">
                 <span>${element.name}</span>
                 <div class="legend-sub-value">
