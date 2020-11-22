@@ -72,7 +72,7 @@ foreach (json_decode($result, true)['clients'] as $client) {
 
 $totalWorkedHours = round($totalWorkedSeconds / 3600, 2);
 
-$targetSales = $totalWorkedHours * 90;
+$targetSales = round($totalWorkedHours * 90,2);
 
 
 $ch = curl_init();
@@ -111,8 +111,6 @@ foreach (json_decode($project, true)['projects'] as $project) {
     $id = $project['id'];
 
     $timeUrl = $timeUrl . "$id,";
-
-   
 }
 
 $timeUrl = rtrim($timeUrl, ", ");
@@ -142,8 +140,8 @@ if ($budgetHours - $workedHours >= 0) {
 }
 
 foreach ($clientArray as $key => $client) {
-    $budgetHours !== 0 && $clientArray[$key]['budgetHours'] = $client['budgetHours'] / $budgetHours;
-    $totalWorkedHours !== 0 && $clientArray[$key]['timeShare'] = $client['workedHours'] / $totalWorkedHours;
+    $budgetHours !== 0 && $clientArray[$key]['budgetHours'] = round(($client['budgetHours'] / $budgetHours), 4);
+    $totalWorkedHours !== 0 && $clientArray[$key]['timeShare'] = round(($client['workedHours'] / $totalWorkedHours), 4);
 }
 
 $salesTotal = ($budgetHours !== 0) ? $budgetHours * 90 : 'unlimited';

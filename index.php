@@ -561,6 +561,11 @@ if(!isset($_SESSION["loggedin"]) || $_SESSION["loggedin"] !== true){
                           <span style="font-weight: bold;"> Projects </span>
                         </h3>
                         <div class="element-box less-padding">
+                          <div class="d-flex justify-content-center" id="projectsLoader">
+                              <div class="spinner-border" style="width: 3rem; height: 3rem;" role="status">
+                                <span class="sr-only">Loading...</span>
+                              </div>
+                          </div>
                           <div class="el-chart-w"><div class="chartjs-size-monitor"><div class="chartjs-size-monitor-expand"><div class=""></div></div><div class="chartjs-size-monitor-shrink"><div class=""></div></div></div>
                             <canvas height="244" id="donutChart123" width="244" class="chartjs-render-monitor" style="display: block; width: 244px; height: 244px;"></canvas>
                             <div class="inside-donut-chart-label" id="noOfProjects">                             
@@ -725,21 +730,6 @@ if(!isset($_SESSION["loggedin"]) || $_SESSION["loggedin"] !== true){
                     </div>
                     <div class="col-sm-7 col-xxl-6">                     
                       <div class="element-wrapper">
-                        <div class="element-actions">
-                          <form class="form-inline justify-content-sm-end">
-                            <select class="form-control form-control-sm rounded">
-                              <option value="Pending">
-                                Today
-                              </option>
-                              <option value="Active">
-                                Last Week
-                              </option>
-                              <option value="Cancelled">
-                                Last 30 Days
-                              </option>
-                            </select>
-                          </form>
-                        </div>
                         <h3 class="element-header">                         
                           <span style="font-weight: bold;"> Employees </span>
                         </h3>

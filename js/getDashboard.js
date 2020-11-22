@@ -11,6 +11,7 @@ const individualprojectsData = document.getElementById("projectsData");
 const dashBoardLoader = document.getElementById("dashBoardLoader");
 const employeeLoader = document.getElementById("employeeLoader");
 const clientLoader = document.getElementById("clientLoader");
+const projectsLoader = document.getElementById("projectsLoader");
 
 $.ajax({
   url: "php/workedHours.php",
@@ -18,8 +19,7 @@ $.ajax({
   success: function (result) {
     const response = JSON.parse(result);
     totalWorkedHours.innerHTML = response.totalWorkedHours;
-    const temTargetSales = response.totalWorkedHours * 90;
-    targetSales.innerHTML = `${temTargetSales}€`;
+    targetSales.innerHTML = `${response.targetSales}€`;
     productivityRate.innerHTML = response.productivityRate;
     profit.innerHTML = `${response.profit}€`;
     response.loss === 0
@@ -47,7 +47,7 @@ $.ajax({
           ${profitShare}%
         </td>
         <td class="text-center">
-         ${timeShare}(${element.workedHours} hours)
+         ${timeShare}% (${element.workedHours} hours)
         </td>
         <td class="text-center">
          ${amount}€
@@ -169,5 +169,6 @@ $.ajax({
 
     noOfProjects.innerHTML = projectsData;
     individualprojectsData.innerHTML = allProjectData;
+    projectsLoader.style.visibility = "hidden";
   },
 });
