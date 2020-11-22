@@ -562,7 +562,7 @@ if(!isset($_SESSION["loggedin"]) || $_SESSION["loggedin"] !== true){
                         </h3>
                         <div class="element-box less-padding">
                           <div class="el-chart-w"><div class="chartjs-size-monitor"><div class="chartjs-size-monitor-expand"><div class=""></div></div><div class="chartjs-size-monitor-shrink"><div class=""></div></div></div>
-                            <canvas height="244" id="donutChart1" width="244" class="chartjs-render-monitor" style="display: block; width: 244px; height: 244px;"></canvas>
+                            <canvas height="244" id="donutChart123" width="244" class="chartjs-render-monitor" style="display: block; width: 244px; height: 244px;"></canvas>
                             <div class="inside-donut-chart-label" id="noOfProjects">                             
                             </div>
                           </div>

@@ -25,9 +25,11 @@
     $projects = array();
     foreach (json_decode($result, true)['clients'] as $client) {
         $newClientProjects = 0;
-        foreach ($client['projects'] as $project) {
-            if ($project['created_on'] >= $startDate) {
-                $newClientProjects += 1;
+        if ($client['projects'] !== 0) {
+            foreach ($client['projects'] as $project) {
+                if ($project['created_on'] >= $startDate) {
+                    $newClientProjects += 1;
+                }
             }
         }
         $totalProjects += $newClientProjects;

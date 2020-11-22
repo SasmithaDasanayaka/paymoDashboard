@@ -75,9 +75,6 @@ $totalWorkedHours = round($totalWorkedSeconds / 3600, 2);
 $targetSales = $totalWorkedHours * 90;
 
 
-
-
-
 $ch = curl_init();
 curl_setopt($ch, CURLOPT_URL, $employeeUrl);
 curl_setopt($ch, CURLOPT_HTTPHEADER, array("Accept: application/json"));
@@ -95,9 +92,6 @@ $productivityRate = ($numOfEmployee  != 0) ? $totalWorkedHours / 160 / $numOfEmp
 $productivityRate = round($productivityRate, 3);
 
 
-
-
-
 $ch = curl_init();
 curl_setopt($ch, CURLOPT_URL, $projectUrl);
 curl_setopt($ch, CURLOPT_HTTPHEADER, array("Accept: application/json"));
@@ -110,28 +104,30 @@ curl_close($ch);
 $budgetHours = 0;
 $workedSeconds = 0;
 
+
+$timeUrl = "https://app.paymoapp.com/api/entries?where=project_id in (";
 foreach (json_decode($project, true)['projects'] as $project) {
     ($project['budget_hours']) && $budgetHours += $project['budget_hours'];
     $id = $project['id'];
-    $timeUrl = "https://app.paymoapp.com/api/entries?where=project_id=$id";
 
-    $ch = curl_init();
-    curl_setopt($ch, CURLOPT_URL, $timeUrl);
-    curl_setopt($ch, CURLOPT_HTTPHEADER, array("Accept: application/json"));
-    curl_setopt($ch, CURLOPT_USERPWD, $email . ":" . $password);
-    curl_setopt($ch, CURLOPT_RETURNTRANSFER, 1);
+    $timeUrl = $timeUrl . "$id,";
 
-    $time = curl_exec($ch);
+   
+}
 
-    print_r(json_decode($time, true));
+$timeUrl = rtrim($timeUrl, ", ");
+$timeUrl = $timeUrl . ")";
 
-    $entries= json_decode($time, true);
+$ch = curl_init();
+curl_setopt($ch, CURLOPT_URL, $timeUrl);
+curl_setopt($ch, CURLOPT_HTTPHEADER, array("Accept: application/json"));
+curl_setopt($ch, CURLOPT_USERPWD, $email . ":" . $password);
+curl_setopt($ch, CURLOPT_RETURNTRANSFER, 1);
 
-    if ($entries['entries']) {
-        foreach ($entries['entries'] as $entry) {
-            $workedSeconds += $entry['duration'];
-        }
-    }
+$time = curl_exec($ch);
+
+foreach (json_decode($time, true)['entries'] as $entry) {
+    $workedSeconds += $entry['duration'];
 }
 
 $workedHours = round($workedSeconds / 3600, 2);

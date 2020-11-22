@@ -95,15 +95,19 @@ $.ajax({
     const projectsData = `<strong>${response.totalProjects}</strong><span>Projects</span>`;
     var allProjectData = "";
     var count = 1;
-    const colors = [" #6896f9", "#85c751", "#806ef9", "#d97b70"];
+    const colorsArray = [];
+    const companyNamesArray = [];
+    const projectsCountArray = [];
     Object.values(response.newClientProjects).forEach((element) => {
+      const bgColor = "#" + (((1 << 24) * Math.random()) | 0).toString(16);
+      colorsArray.push(bgColor);
+      companyNamesArray.push(element.name);
+      projectsCountArray.push(element.newProjects);
       if (count % 2 !== 0) {
         allProjectData += `
         <div class="col-auto col-xxxxl-6 ml-sm-auto mr-sm-auto">
           <div class="legend-value-w">
-            <div class="legend-pin legend-pin-squared" style="background-color: ${
-              colors[count % 4]
-            };"></div>
+            <div class="legend-pin legend-pin-squared" style="background-color: ${bgColor};"></div>
               <div class="legend-value">
                 <span>${element.name}</span>
                 <div class="legend-sub-value">
@@ -115,9 +119,7 @@ $.ajax({
       } else {
         allProjectData += `
           <div class="legend-value-w">
-            <div class="legend-pin legend-pin-squared" style="background-color: ${
-              colors[count % 4]
-            };"></div>
+            <div class="legend-pin legend-pin-squared" style="background-color: ${bgColor};"></div>
               <div class="legend-value">
                 <span>${element.name}</span>
                 <div class="legend-sub-value">
@@ -129,6 +131,41 @@ $.ajax({
         count += 1;
       }
     });
+
+    if ($("#donutChart123").length) {
+      var donutChart1 = $("#donutChart123");
+
+      // donut chart data
+      var data1 = {
+        labels: companyNamesArray,
+        datasets: [
+          {
+            data: projectsCountArray,
+            backgroundColor: colorsArray,
+            hoverBackgroundColor: colorsArray,
+            borderWidth: 6,
+            hoverBorderColor: "transparent",
+          },
+        ],
+      };
+
+      // -----------------
+      // init donut chart
+      // -----------------
+      new Chart(donutChart1, {
+        type: "doughnut",
+        data: data1,
+        options: {
+          legend: {
+            display: false,
+          },
+          animation: {
+            animateScale: true,
+          },
+          cutoutPercentage: 80,
+        },
+      });
+    }
 
     noOfProjects.innerHTML = projectsData;
     individualprojectsData.innerHTML = allProjectData;
