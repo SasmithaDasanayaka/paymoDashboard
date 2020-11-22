@@ -109,6 +109,7 @@ curl_close($ch);
 
 $budgetHours = 0;
 $workedSeconds = 0;
+
 foreach (json_decode($project, true)['projects'] as $project) {
     ($project['budget_hours']) && $budgetHours += $project['budget_hours'];
     $id = $project['id'];
@@ -122,8 +123,14 @@ foreach (json_decode($project, true)['projects'] as $project) {
 
     $time = curl_exec($ch);
 
-    foreach (json_decode($time, true)['entries'] as $entry) {
-        $workedSeconds += $entry['duration'];
+    print_r(json_decode($time, true));
+
+    $entries= json_decode($time, true);
+
+    if ($entries['entries']) {
+        foreach ($entries['entries'] as $entry) {
+            $workedSeconds += $entry['duration'];
+        }
     }
 }
 
