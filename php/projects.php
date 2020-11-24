@@ -1,7 +1,5 @@
 <?php
-$email = "sasmithadasanayaka96@gmail.com";
-$password = "HjA!!7P2Mtxhu5b";
-
+include 'config.php';
 
 $currentDate = gmdate('y-m-');
 $startDate = $currentDate . "01T00:00:00Z";
@@ -35,12 +33,6 @@ foreach (json_decode($result, true)['clients'] as $client) {
     $totalProjects += $newClientProjects;
     $projects[$client['id']] = array('name' => $client['name'], 'newProjects' => $newClientProjects);
 }
-
-
-
-
-
-
 
 
 $resultArray = array("newClientProjects" => $projects, 'totalProjects' => $totalProjects);

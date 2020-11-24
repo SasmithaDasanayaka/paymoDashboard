@@ -1,9 +1,8 @@
 <?php
+include 'config.php';
+
 
 $userUrl = "https://app.paymoapp.com/api/users";
-
-$email = "sasmithadasanayaka96@gmail.com";
-$password = "HjA!!7P2Mtxhu5b";
 
 $ch = curl_init();
 curl_setopt($ch, CURLOPT_URL, $userUrl);

@@ -93,10 +93,10 @@ $.ajax({
           ${element.name}
         </td>
         <td >
-          ${element.workedHours}
+          ${element.workedHours}h
         </td>
         <td >
-          ${element.productivityRate}
+          ${element.productivityRate}%
         </td>
       </tr>`;
     });

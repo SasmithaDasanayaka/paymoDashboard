@@ -31,8 +31,7 @@ $password = "HjA!!7P2Mtxhu5b";
 for ($i = 0; $i < 500; $i++) {
 
 	$post = array(
-		"client_id" => 892365,
-		"name" => "New Project$i",
+		"name" => "New Project",
 		"description" => "Project added from API"
 	);
 

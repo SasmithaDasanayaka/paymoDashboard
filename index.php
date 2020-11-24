@@ -54,16 +54,14 @@ if (!isset($_SESSION["loggedin"]) || $_SESSION["loggedin"] !== true) {
 
         <div class="logged-user-w">
           <div class="logged-user-i">
-            <div class="avatar-w">
-              <img alt="" src="img/avatar1.jpg">
-            </div>
+            <!-- <div class="avatar-w">
+              <img alt="" src="img/avatar2.png">
+            </div> -->
+            <button type="button" class="btn btn-md btn-success">Log Out</button>
             <div class="logged-user-menu color-style-bright">
               <div class="logged-user-avatar-info">
-                <div class="avatar-w">
-                  <img alt="" src="img/avatar1.jpg">
-                </div>
                 <div class="logged-user-info-w">
-                  <div class="logged-user-name">
+                  <div class="logged-user-name" style="visibility: hidden;">
                     Logged User
                   </div>
                 </div>

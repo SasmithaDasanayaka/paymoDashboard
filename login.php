@@ -1,4 +1,5 @@
 <?php
+include 'php/config.php';
 session_start();
 
 if (isset($_SESSION["loggedin"]) && $_SESSION["loggedin"] === true) {
@@ -7,8 +8,7 @@ if (isset($_SESSION["loggedin"]) && $_SESSION["loggedin"] === true) {
 }
 
 if (isset($_POST['Submit'])) {
-    $logins = array('admin' => 'Admin@123');
-
+  
     $Username = isset($_POST['Username']) ? $_POST['Username'] : '';
     $Password = isset($_POST['Password']) ? $_POST['Password'] : '';
 

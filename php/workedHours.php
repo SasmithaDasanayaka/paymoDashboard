@@ -1,11 +1,9 @@
 <?php
+include 'config.php';
 
 $clientUrl = "https://app.paymoapp.com/api/clients?include=projects.id,projects.budget_hours";
 $employeeUrl = "https://app.paymoapp.com/api/users?where=type=Employee";
 $projectUrl = "https://app.paymoapp.com/api/projects";
-
-$email = "sasmithadasanayaka96@gmail.com";
-$password = "HjA!!7P2Mtxhu5b";
 
 $ch = curl_init();
 curl_setopt($ch, CURLOPT_URL, $clientUrl);
@@ -156,16 +154,16 @@ curl_setopt($ch, CURLOPT_RETURNTRANSFER, 1);
 
 $time = curl_exec($ch);
 
-$lastThreeMonthsProjectSeconds = 0;
+$lastThreeMonthsProjectBudgetHours = 0;
 
 foreach (json_decode($time, true)['entries'] as $entry) {
     $workedSeconds += $entry['duration'];
     if ($entry['created_on'] >= $_2monthPreviousStartDate && $entry['updated_on'] <= $_currentMonthStartDate) {
-        $lastThreeMonthsProjectSeconds += $entry['duration'];
+        $lastThreeMonthsProjectBudgetHours += $entry['budget_hours'];
     }
 }
 
-$lastThreeMonthsProjectSeconds !== 0 ? $jobHours = round(($currentMonthProjectCount * ($totalLastThreeMonthsProjects / $lastThreeMonthsProjectSeconds / 3600)), 2) : $jobHours = 0;
+$lastThreeMonthsProjectBudgetHours !== 0 ? $jobHours = round((($lastThreeMonthsProjectBudgetHours / 90) * ((4 * $val1) + $val2)), 2) : $jobHours = 0;
 $fullyOccupiedEmployees = round(($jobHours / 160), 2);
 $workedHours = round($workedSeconds / 3600, 2);
 if ($budgetHours - $workedHours >= 0) {
@@ -179,8 +177,8 @@ if ($budgetHours - $workedHours >= 0) {
 }
 
 foreach ($clientArray as $key => $client) {
-    $budgetHours !== 0 && $clientArray[$key]['budgetHours'] = round(($client['budgetHours'] / $budgetHours), 4);
-    $totalWorkedHours !== 0 && $clientArray[$key]['timeShare'] = round(($client['workedHours'] / $totalWorkedHours), 4);
+    $budgetHours !== 0 && $clientArray[$key]['budgetHours'] = round(($client['budgetHours'] / $budgetHours), 2);
+    $totalWorkedHours !== 0 && $clientArray[$key]['timeShare'] = round(($client['workedHours'] / $totalWorkedHours), 2);
 }
 
 $salesTotal = ($budgetHours !== 0) ? $budgetHours * 90 : 'unlimited';
