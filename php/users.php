@@ -1,6 +1,16 @@
 <?php
 include 'config.php';
 
+$temDateRange = $_GET['dateRange'];
+if ($temDateRange === '3_months') {
+    $dateRange = date('Y-m-d', strtotime('-90 day')) . "T00:00:00Z";
+} else if ($temDateRange === '2_months') {
+    $dateRange = date('Y-m-d', strtotime('-60 day')) . "T00:00:00Z";
+} else if ($temDateRange === '1_months') {
+    $dateRange = date('Y-m-d', strtotime('-30 day')) . "T00:00:00Z";
+} else {
+    $dateRange = date('Y-m-d', strtotime('-14 day')) . "T00:00:00Z";
+}
 
 $userUrl = "https://app.paymoapp.com/api/users";
 
@@ -25,19 +35,9 @@ foreach (json_decode($result, true)['users'] as $users) {
     $userId = $users['id'];
     $workedDayHours = $users['workday_hours'];
 
-    $currentDate = gmdate('y-m-');
-    $startDate = $currentDate . "01";
+    $currentDate = date('Y-m-d', strtotime('0 day')) . "T00:00:00Z";  
 
-    if (in_array(date('F'), $_30daysMonths)) {
-        if (date('F') === 'February') {
-            $endDate = $currentDate . "29";
-        } else {
-            $endDate = $currentDate . "30";
-        }
-    } else {
-        $endDate = $currentDate . "31";
-    }
-    $timeUrl = "https://app.paymoapp.com/api/entries?where=user_id=$userId and time_interval in ('$startDate','$endDate')";
+    $timeUrl = "https://app.paymoapp.com/api/entries?where=user_id=$userId and time_interval in ('$dateRange','$currentDate')";
 
 
     $ch = curl_init();

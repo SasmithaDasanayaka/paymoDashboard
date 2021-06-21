@@ -24,47 +24,15 @@ set_time_limit(1000);
 
 
 
-$target_url = "https://app.paymoapp.com/api/projects";
-$email = "sasmithadasanayaka96@gmail.com";
-$password = "HjA!!7P2Mtxhu5b";
-
-for ($i = 0; $i < 500; $i++) {
-
-	$post = array(
-		"name" => "New Project",
-		"description" => "Project added from API"
-	);
-
-	$ch = curl_init();
-	curl_setopt($ch, CURLOPT_URL, $target_url);
-	curl_setopt($ch, CURLOPT_HTTPHEADER, array("Accept: application/json"));
-	curl_setopt($ch, CURLOPT_USERPWD, $email . ":" . $password);
-	curl_setopt($ch, CURLOPT_POST, 1);
-	curl_setopt($ch, CURLOPT_POSTFIELDS, $post);
-	curl_setopt($ch, CURLOPT_RETURNTRANSFER, 1);
-
-	$result = curl_exec($ch);
-	if ($result === false) {
-		echo "Curl error: " . curl_error($ch) . "\n";
-	}
-	curl_close($ch);
-
-	echo "New project ID: " . json_decode($result, true)['projects'][0]['id'];
-}
-
-
-// $target_url = "https://app.paymoapp.com/api/entries";
-// $email = "sasmithadasanayaka96@gmail.com";
-// $password = "HjA!!7P2Mtxhu5b";
+// $target_url = "https://app.paymoapp.com/api/projects";
+// $email = "sasmithanilupul.17@cse.mrt.ac.lk";
+// $password = "Abcd@123";
 
 // for ($i = 0; $i < 500; $i++) {
 
 // 	$post = array(
-// 		"task_id" => 19776038,
-// 		"date" => "2014-12-10",
-// 		"duration" => 3600,
-// 		"description" => "Talked to Susan on the phone.",
-
+// 		"name" => "New Project",
+// 		"description" => "Project added from API"
 // 	);
 
 // 	$ch = curl_init();
@@ -81,5 +49,58 @@ for ($i = 0; $i < 500; $i++) {
 // 	}
 // 	curl_close($ch);
 
-// 	print_r(json_decode($result, true));
+// 	echo "New project ID: " . json_decode($result, true)['projects'][0]['id'];
 // }
+
+
+$target_url = "https://app.paymoapp.com/api/users";
+$email = "sasmithanilupul.17@cse.mrt.ac.lk";
+$password = "Abcd@123";
+$clientId = 899156;
+$userId = 216860;
+
+// for ($i = 71; $i <= 80; $i++) {
+
+//     $post = array(
+//         "name" => "project '$i'",
+//         "description" => "Latest project we'll be working on",
+//         "billable" => true,
+//         "client_id" => $clientId,
+//         "users" => [216860, 216861],
+//     );
+
+//     $clientId++;
+//     $userId++;
+$ch = curl_init();
+curl_setopt($ch, CURLOPT_URL, $target_url);
+curl_setopt($ch, CURLOPT_HTTPHEADER, array("Accept: application/json"));
+curl_setopt($ch, CURLOPT_USERPWD, $email . ":" . $password);
+curl_setopt($ch, CURLOPT_RETURNTRANSFER, 1);
+
+
+$result = curl_exec($ch);
+if ($result === false) {
+    echo "Curl error: " . curl_error($ch) . "\n";
+}
+curl_close($ch);
+
+// print_r(json_decode($result, true));
+
+foreach (json_decode($result, true)['users'] as $client) {
+    $id = $client['id'];
+    $url = "https://app.paymoapp.com/api/users/$id";
+
+    $ch = curl_init();
+    curl_setopt($ch, CURLOPT_URL, $url);
+    curl_setopt($ch, CURLOPT_HTTPHEADER, array("Accept: application/json"));
+    curl_setopt($ch, CURLOPT_USERPWD, $email . ":" . $password);
+    curl_setopt($ch, CURLOPT_CUSTOMREQUEST, "DELETE");
+    curl_setopt($ch, CURLOPT_POSTFIELDS, 1);
+    curl_setopt($ch, CURLOPT_RETURNTRANSFER, true);
+    $result = curl_exec($ch);
+    print_r(json_decode($result, true));
+    curl_close($ch);
+}
+// }
+// setlocale(LC_MONETARY, 'en_US');
+// echo money_format('%i', $number) . "\n";

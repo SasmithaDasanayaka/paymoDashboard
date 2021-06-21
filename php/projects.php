@@ -4,8 +4,8 @@ include 'config.php';
 $currentDate = gmdate('y-m-');
 $startDate = $currentDate . "01T00:00:00Z";
 
-$_1monthBefore = date("y-m-d", strtotime("-1 Months"));
-$_2monthBefore = date("y-m-d", strtotime("-2 Months"));
+
+$_2monthPreviousStartDate = date('Y-m-', strtotime('-3 month')) . "01T00:00:00Z";
 
 $projectsUrl = "https://app.paymoapp.com/api/clients?include=projects.id,projects.created_on";
 
@@ -25,7 +25,7 @@ foreach (json_decode($result, true)['clients'] as $client) {
     $newClientProjects = 0;
     if ($client['projects'] !== 0) {
         foreach ($client['projects'] as $project) {
-            if ($project['created_on'] >= $startDate) {
+            if ($project['created_on'] >= $_2monthPreviousStartDate) {
                 $newClientProjects += 1;
             }
         }
